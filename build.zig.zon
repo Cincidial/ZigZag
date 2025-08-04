@@ -1,0 +1,19 @@
+.{
+    .name = .ZigZag,
+    .version = "0.0.1", // This is a [Semantic Version](https://semver.org/).
+
+    .fingerprint = 0xe01f55cf5b040859, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.14.1",
+    .dependencies = .{
+        .zopengl = .{ .path = "./libs/zopengl" },
+        .zglfw = .{ .path = "./libs/zglfw" },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "libs",
+        "LICENSE",
+        "README.md",
+    },
+}

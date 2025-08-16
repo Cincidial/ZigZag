@@ -20,16 +20,19 @@ pub fn main() !void {
 
     const window = try glfw.Window.create(600, 600, "ZigZag", null);
     defer window.destroy();
+    glfw.makeContextCurrent(window);
+    glfw.swapInterval(1);
+
+    try zopengl.loadCoreProfile(glfw.getProcAddress, gl_version_major, gl_version_minor);
+
+    try app_data.init();
+    defer app_data.deinit();
 
     app.init();
     defer app.deinit();
-
-    glfw.makeContextCurrent(window);
-    glfw.swapInterval(1);
     _ = window.setFramebufferSizeCallback(app.windowResize);
     _ = window.setKeyCallback(app.keyEvent);
 
-    try zopengl.loadCoreProfile(glfw.getProcAddress, gl_version_major, gl_version_minor);
     while (!window.shouldClose() and app_data.run_app) {
         window.swapBuffers();
         glfw.pollEvents();

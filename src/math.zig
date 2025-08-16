@@ -1,6 +1,8 @@
 const std = @import("std");
+const gl = @import("zopengl").bindings;
 
-pub const Vec2 = struct {
+pub const Vec2 = packed struct {
+    pub const STRIDE = @sizeOf(f32) * 2;
     pub const ZERO: Vec2 = .{ .x = 0, .y = 0 };
 
     x: f32,
@@ -32,6 +34,11 @@ pub const Vec2 = struct {
 
     pub inline fn subY(vec2: Vec2, scalar: f32) Vec2 {
         return .{ .x = vec2.x, .y = vec2.y - scalar };
+    }
+
+    pub fn setupVaoAttrib(attrib: u8, stride: u16, offset: u16) void {
+        gl.vertexAttribPointer(attrib, 2, gl.FLOAT, gl.FALSE, stride, @ptrFromInt(offset));
+        gl.enableVertexAttribArray(attrib);
     }
 
     pub fn print(self: Vec2) void {

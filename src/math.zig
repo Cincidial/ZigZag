@@ -1,8 +1,8 @@
 const std = @import("std");
 const gl = @import("zopengl").bindings;
 
-pub const Vec2 = packed struct {
-    pub const STRIDE = @sizeOf(f32) * 2;
+pub const Vec2 = extern struct {
+    pub const NO_PADDING_SIZE = @bitSizeOf(Vec2) / 8;
     pub const ZERO: Vec2 = .{ .x = 0, .y = 0 };
 
     x: f32,

@@ -42,6 +42,4 @@ pub fn main() !void {
 
         app.iterate();
     }
-
-    try std.io.getStdOut().writeAll("Window Closed!\n");
 }

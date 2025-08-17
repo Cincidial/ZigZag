@@ -5,7 +5,7 @@ const Color = @import("color.zig").Color;
 const Vec2 = @import("../math.zig").Vec2;
 const graphics_mem = @import("memory.zig");
 
-pub const ColorVertex = packed struct {
+pub const ColorVertex = extern struct {
     color: Color,
     pos: Vec2,
 
@@ -23,9 +23,9 @@ pub const ColorVertex = packed struct {
         gl.bindVertexArray(vao);
         _ = graphics_mem.sliceToVbo(slice);
 
-        const stride = Color.STRIDE + Vec2.STRIDE;
+        const stride = @sizeOf(ColorVertex); // Padding included
         Color.setupVaoAttrib(0, stride, 0);
-        Vec2.setupVaoAttrib(1, stride, Color.STRIDE);
+        Vec2.setupVaoAttrib(1, stride, Color.NO_PADDING_SIZE);
 
         return vao;
     }

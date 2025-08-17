@@ -11,7 +11,11 @@ pub const Home = struct {
     vao: gl.Uint,
 
     pub fn init(alloc: std.mem.Allocator) Home {
-        const vertices = [_]ColorVertex{ColorVertex.init(Color.init(100, 100, 100, 100), Vec2.ZERO)};
+        const vertices = [_]ColorVertex{
+            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = -0.5, .y = -0.5 }),
+            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = 0.5, .y = -0.5 }),
+            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = 0, .y = 0.5 }),
+        };
         const vao = ColorVertex.genVao(&vertices);
 
         return .{
@@ -27,7 +31,9 @@ pub const Home = struct {
     }
 
     pub fn iterate(self: Home) void {
-        gl.useProgram(app_data.simple_shader.shader_id);
+        app_data.simple_shader.use();
         gl.bindVertexArray(self.vao);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        gl.bindVertexArray(0);
     }
 };

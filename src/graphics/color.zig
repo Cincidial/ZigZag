@@ -1,7 +1,7 @@
 const gl = @import("zopengl").bindings;
 
-pub const Color = packed struct {
-    pub const STRIDE = @sizeOf(f32) * 4;
+pub const Color = extern struct {
+    pub const NO_PADDING_SIZE = @bitSizeOf(Color) / 8;
 
     r: f32,
     g: f32,

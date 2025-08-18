@@ -4,24 +4,27 @@ const app_data = @import("../app_data.zig");
 const ColorVertex = @import("../graphics/vertex.zig").ColorVertex;
 const Color = @import("../graphics/color.zig").Color;
 const Vec2 = @import("../math.zig").Vec2;
+const Renderer = @import("../graphics/renderer.zig").Renderer;
 
 pub const Home = struct {
     alloc_once: std.heap.ArenaAllocator,
     alloc_loop: std.heap.ArenaAllocator,
-    vao: gl.Uint,
+    renderer: Renderer,
 
     pub fn init(alloc: std.mem.Allocator) Home {
         const vertices = [_]ColorVertex{
-            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = -0.5, .y = -0.5 }),
+            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = 0.5, .y = 0.5 }),
             ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = 0.5, .y = -0.5 }),
-            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = 0, .y = 0.5 }),
+            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = -0.5, .y = -0.5 }),
+            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = -0.5, .y = 0.5 }),
         };
-        const vao = ColorVertex.genVao(&vertices);
+        const indices = [_]u16{ 0, 1, 3, 1, 2, 3 };
+        const vao = ColorVertex.genVao(&vertices, &indices);
 
         return .{
             .alloc_once = std.heap.ArenaAllocator.init(alloc),
             .alloc_loop = std.heap.ArenaAllocator.init(alloc),
-            .vao = vao,
+            .renderer = Renderer.init(&app_data.simple_shader, vao, indices.len),
         };
     }
 
@@ -31,9 +34,6 @@ pub const Home = struct {
     }
 
     pub fn iterate(self: Home) void {
-        app_data.simple_shader.use();
-        gl.bindVertexArray(self.vao);
-        gl.drawArrays(gl.TRIANGLES, 0, 3);
-        gl.bindVertexArray(0);
+        self.renderer.render();
     }
 };

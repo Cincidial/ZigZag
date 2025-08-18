@@ -16,12 +16,13 @@ pub const ColorVertex = extern struct {
         };
     }
 
-    pub fn genVao(slice: []const ColorVertex) gl.Uint {
+    pub fn genVao(verticies: []const ColorVertex, indices: []const u16) gl.Uint {
         var vao: gl.Uint = undefined;
         gl.genVertexArrays(1, &vao);
 
         gl.bindVertexArray(vao);
-        _ = graphics_mem.sliceToVbo(slice);
+        _ = graphics_mem.sliceToVbo(verticies);
+        _ = graphics_mem.indeciesToEbo(indices);
 
         const stride = @sizeOf(ColorVertex); // Padding included
         Color.setupVaoAttrib(0, stride, 0);

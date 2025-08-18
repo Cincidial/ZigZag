@@ -13,3 +13,15 @@ pub fn sliceToVbo(slice: anytype) gl.Uint {
 
     return vbo;
 }
+
+/// Binds the vertices provided to a new gl array buffer.
+/// The buffer is bound to the currently bound VAO
+pub fn indeciesToEbo(indicies: []const u16) gl.Uint {
+    var ebo: gl.Uint = 0;
+
+    gl.genBuffers(1, &ebo);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ebo);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, @intCast(indicies.len * @sizeOf(u16)), indicies.ptr, gl.STATIC_DRAW);
+
+    return ebo;
+}

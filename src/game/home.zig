@@ -12,11 +12,12 @@ pub const Home = struct {
     renderer: Renderer,
 
     pub fn init(alloc: std.mem.Allocator) Home {
+        const tc = Color.init(0.75, 0.1, 0.1, 1);
         const vertices = [_]ColorVertex{
-            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = 0.5, .y = 0.5 }),
-            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = 0.5, .y = -0.5 }),
-            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = -0.5, .y = -0.5 }),
-            ColorVertex.init(Color.init(100, 100, 100, 100), .{ .x = -0.5, .y = 0.5 }),
+            ColorVertex.init(tc, .{ .x = 0.5, .y = 0.5 }),
+            ColorVertex.init(tc, .{ .x = 0.5, .y = -0.5 }),
+            ColorVertex.init(tc, .{ .x = -0.5, .y = -0.5 }),
+            ColorVertex.init(tc, .{ .x = -0.5, .y = 0.5 }),
         };
         const indices = [_]u16{ 0, 1, 3, 1, 2, 3 };
         const vao = ColorVertex.genVao(&vertices, &indices);

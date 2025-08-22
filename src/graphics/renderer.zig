@@ -17,3 +17,8 @@ pub const Renderer = struct {
         gl.bindVertexArray(0);
     }
 };
+
+// Make each renderer have the uniform values needed for their shader / compose a struct that is a union of all uniform types for shaders
+// Shaders on-use can be passed their uniform struct (or do via some other way). Only set when value has changed?
+// Maybe there is some other better way to pass uniform values?
+// THere is instanced rendering, but for now just keep it simple with uniforms, then impliment that later

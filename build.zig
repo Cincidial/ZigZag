@@ -20,6 +20,9 @@ pub fn build(b: *std.Build) void {
     exe.root_module.addImport("zglfw", zglfw.module("root"));
     exe.linkLibrary(zglfw.artifact("glfw"));
 
+    const zam = b.dependency("zam", .{ .target = target });
+    exe.root_module.addImport("zam", zam.module("root"));
+
     b.installArtifact(exe);
 
     const run_step = b.step("run", "Run the app");

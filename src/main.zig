@@ -28,7 +28,7 @@ pub fn main() !void {
     try app_data.init();
     defer app_data.deinit();
 
-    app.init();
+    try app.init();
     defer app.deinit();
     _ = window.setFramebufferSizeCallback(app.windowResize);
     _ = window.setKeyCallback(app.keyEvent);

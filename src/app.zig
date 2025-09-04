@@ -9,9 +9,9 @@ var buffer: [1024 * 1024 * 5]u8 = undefined;
 var alloc: std.heap.FixedBufferAllocator = undefined;
 var current_mode: Mode = undefined;
 
-pub fn init() void {
+pub fn init() !void {
     alloc = std.heap.FixedBufferAllocator.init(&buffer);
-    current_mode = .{ .home = Home.init(alloc.allocator()) };
+    current_mode = .{ .home = try Home.init(alloc.allocator()) };
 }
 
 pub fn deinit() void {

@@ -4,3 +4,6 @@
 [submodule "libs/zglfw"]
 	path = libs/zglfw
 	url = https://github.com/zig-gamedev/zglfw.git
+[submodule "libs/Zam"]
+	path = libs/Zam
+	url = https://github.com/Cincidial/Zam.git

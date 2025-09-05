@@ -8,11 +8,14 @@ pub var window_h: u16 = 0;
 pub var window_dim: Vec2 = Vec2.ZERO;
 
 pub var simple_shader: Shader = undefined;
+pub var texture_shader: Shader = undefined;
 
 pub fn init() !void {
     simple_shader = try Shader.init(@embedFile("shaders/simple.vs"), @embedFile("shaders/simple.fs"));
+    texture_shader = try Shader.init(@embedFile("shaders/texture.vs"), @embedFile("shaders/texture.fs"));
 }
 
 pub fn deinit() void {
     simple_shader.deinit();
+    texture_shader.deinit();
 }

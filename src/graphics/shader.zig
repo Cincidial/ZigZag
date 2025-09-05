@@ -21,7 +21,7 @@ fn checkForShaderError(id: gl.Uint, err: Error) Error!void {
 }
 
 pub const Shader = struct {
-    shader_id: gl.Uint,
+    id: gl.Uint,
 
     pub fn init(vs: [*:0]const u8, fs: [*:0]const u8) Error!Shader {
         const vs_id = gl.createShader(gl.VERTEX_SHADER);
@@ -44,15 +44,15 @@ pub const Shader = struct {
         gl.deleteShader(fs_id);
 
         return .{
-            .shader_id = shader_id,
+            .id = shader_id,
         };
     }
 
     pub fn deinit(self: Shader) void {
-        gl.deleteProgram(self.shader_id);
+        gl.deleteProgram(self.id);
     }
 
     pub fn use(self: Shader) void {
-        gl.useProgram(self.shader_id);
+        gl.useProgram(self.id);
     }
 };

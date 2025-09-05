@@ -31,3 +31,30 @@ pub const ColorVertex = extern struct {
         return vao;
     }
 };
+
+pub const TextureVertex = extern struct {
+    tex: Vec2,
+    pos: Vec2,
+
+    pub fn init(tex: Vec2, pos: Vec2) TextureVertex {
+        return .{
+            .tex = tex,
+            .pos = pos,
+        };
+    }
+
+    pub fn genVao(verticies: []const TextureVertex, indices: []const u16) gl.Uint {
+        var vao: gl.Uint = undefined;
+        gl.genVertexArrays(1, &vao);
+
+        gl.bindVertexArray(vao);
+        _ = graphics_mem.sliceToVbo(verticies);
+        _ = graphics_mem.indeciesToEbo(indices);
+
+        const stride = @sizeOf(TextureVertex); // Padding included
+        Vec2.setupVaoAttrib(0, stride, 0);
+        Vec2.setupVaoAttrib(1, stride, Vec2.NO_PADDING_SIZE);
+
+        return vao;
+    }
+};

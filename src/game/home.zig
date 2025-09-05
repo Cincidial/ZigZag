@@ -2,7 +2,7 @@ const std = @import("std");
 const gl = @import("zopengl").bindings;
 const zam = @import("zam");
 const app_data = @import("../app_data.zig");
-const ColorVertex = @import("../graphics/vertex.zig").ColorVertex;
+const TextureVertex = @import("../graphics/vertex.zig").TextureVertex;
 const Color = @import("../graphics/color.zig").Color;
 const Vec2 = @import("../math.zig").Vec2;
 const Renderer = @import("../graphics/renderer.zig").Renderer;
@@ -12,25 +12,26 @@ pub const Home = struct {
     alloc_once: std.heap.ArenaAllocator,
     alloc_loop: std.heap.ArenaAllocator,
     renderer: Renderer,
+    texture: Texture,
 
     pub fn init(alloc: std.mem.Allocator) !Home {
-        const tc = Color.init(0.75, 0.1, 0.1, 1);
-        const vertices = [_]ColorVertex{
-            ColorVertex.init(tc, .{ .x = 0.5, .y = 0.5 }),
-            ColorVertex.init(tc, .{ .x = 0.5, .y = -0.5 }),
-            ColorVertex.init(tc, .{ .x = -0.5, .y = -0.5 }),
-            ColorVertex.init(tc, .{ .x = -0.5, .y = 0.5 }),
+        const vertices = [_]TextureVertex{
+            TextureVertex.init(.{ .x = 1.0, .y = 1.0 }, .{ .x = 0.5, .y = 0.5 }),
+            TextureVertex.init(.{ .x = 1.0, .y = 0 }, .{ .x = 0.5, .y = -0.5 }),
+            TextureVertex.init(.{ .x = 0, .y = 0 }, .{ .x = -0.5, .y = -0.5 }),
+            TextureVertex.init(.{ .x = 0, .y = 1.0 }, .{ .x = -0.5, .y = 0.5 }),
         };
         const indices = [_]u16{ 0, 1, 3, 1, 2, 3 };
-        const vao = ColorVertex.genVao(&vertices, &indices);
+        const vao = TextureVertex.genVao(&vertices, &indices);
 
-        var png = try zam.Png.asU8RGBA(@embedFile("../raw/textures/Font.png"), alloc);
-        _ = Texture.init(&png);
+        var png = try zam.Png.asU8RGBA(@embedFile("../raw/textures/test.png"), alloc, true);
+        const texture = Texture.init(&png);
 
         return .{
             .alloc_once = std.heap.ArenaAllocator.init(alloc),
             .alloc_loop = std.heap.ArenaAllocator.init(alloc),
-            .renderer = Renderer.init(&app_data.simple_shader, vao, indices.len),
+            .renderer = Renderer.init(&app_data.texture_shader, vao, indices.len),
+            .texture = texture,
         };
     }
 
@@ -40,6 +41,6 @@ pub const Home = struct {
     }
 
     pub fn iterate(self: Home) void {
-        self.renderer.render();
+        self.renderer.render(self.texture);
     }
 };

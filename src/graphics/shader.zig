@@ -55,4 +55,9 @@ pub const Shader = struct {
     pub fn use(self: Shader) void {
         gl.useProgram(self.id);
     }
+
+    pub fn setInt(self: Shader, name: [*c]const gl.Char, value: i32) void {
+        self.use();
+        gl.uniform1i(gl.getUniformLocation(self.id, name), value);
+    }
 };

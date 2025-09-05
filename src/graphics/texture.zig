@@ -25,4 +25,9 @@ pub const Texture = struct {
             .id = id,
         };
     }
+
+    pub fn use(self: Texture, pos: comptime_int) void {
+        gl.activeTexture(pos);
+        gl.bindTexture(gl.TEXTURE_2D, self.id);
+    }
 };

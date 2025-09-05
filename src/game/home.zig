@@ -41,6 +41,6 @@ pub const Home = struct {
     }
 
     pub fn iterate(self: Home) void {
-        self.renderer.render(self.texture);
+        self.renderer.renderTexture(self.texture);
     }
 };

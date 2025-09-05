@@ -8,18 +8,20 @@ pub const Renderer = struct {
     index_count: u16,
 
     pub fn init(shader: *const Shader, vao: gl.Uint, index_count: u16) Renderer {
-        shader.*.use();
-        gl.uniform1i(gl.getUniformLocation(shader.id, "tex0"), 0);
         return .{ .shader = shader, .vao = vao, .index_count = index_count };
     }
 
-    pub fn render(self: Renderer, texture: Texture) void {
+    pub fn render(self: Renderer) void {
         self.shader.*.use();
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, texture.id);
+
         gl.bindVertexArray(self.vao);
         gl.drawElements(gl.TRIANGLES, self.index_count, gl.UNSIGNED_SHORT, null);
         gl.bindVertexArray(0);
+    }
+
+    pub fn renderTexture(self: Renderer, texture: Texture) void {
+        texture.use(gl.TEXTURE0);
+        self.render();
     }
 };
 
